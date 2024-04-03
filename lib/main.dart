@@ -119,6 +119,9 @@ class _FormKontakState extends State<FormKontak> {
                             ),
                             _image,
                           );
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result['message'])));
                         }
                       },
                       child: const Text("Simpan"))),
