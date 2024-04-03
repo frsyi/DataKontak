@@ -105,6 +105,9 @@ class _FormKontakState extends State<FormKontak> {
               ),
               ElevatedButton(
                   onPressed: getImage, child: const Text("Ambil Gambar")),
+              const SizedBox(
+                height: 10,
+              ),
               Container(
                   margin: const EdgeInsets.all(10),
                   child: ElevatedButton(
