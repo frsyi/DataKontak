@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:data_kontak/model/kontak.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'controller/kontak_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -98,8 +101,7 @@ class _FormKontakState extends State<FormKontak> {
                   ? const Text('Tidak ada gambar yang dipilih.')
                   : Image.file(_image!),
               const SizedBox(
-                height: 100,
-                child: Text(""),
+                height: 40,
               ),
               ElevatedButton(
                   onPressed: getImage, child: const Text("Ambil Gambar")),
@@ -107,9 +109,16 @@ class _FormKontakState extends State<FormKontak> {
                   child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          // var result = await KontakController().addPerson(
-
-                          // );
+                          var result = await KontakController().addPerson(
+                            Kontak(
+                              nama: _namaController.text,
+                              email: _emailController.text,
+                              alamat: _alamatController.text,
+                              noTelepon: _noTelpController.text,
+                              foto: _image!.path,
+                            ),
+                            _image,
+                          );
                         }
                       },
                       child: const Text("Simpan"))),
