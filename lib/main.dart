@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:data_kontak/model/kontak.dart';
+import 'package:data_kontak/screen/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -38,11 +39,11 @@ class FormKontak extends StatefulWidget {
 class _FormKontakState extends State<FormKontak> {
   File? _image;
   final _imagePicker = ImagePicker();
+  String? _alamat;
 
   final _formKey = GlobalKey<FormState>();
   final _namaController = TextEditingController();
   final _emailController = TextEditingController();
-  final _alamatController = TextEditingController();
   final _noTelpController = TextEditingController();
 
   Future<void> getImage() async {
@@ -52,8 +53,6 @@ class _FormKontakState extends State<FormKontak> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-      } else {
-        print('No image selected');
       }
     });
   }
@@ -82,11 +81,51 @@ class _FormKontakState extends State<FormKontak> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.all(16),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      labelText: "Alamat", hintText: "Masukkan Alamat"),
-                  controller: _alamatController,
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Alamat"),
+                    _alamat == null
+                        ? const SizedBox(
+                            width: double.infinity,
+                            child: Text('Alamat Kosong'))
+                        : Text('$_alamat'),
+                    _alamat == null
+                        ? TextButton(
+                            onPressed: () async {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapScreen(
+                                      onLocationSelected: (selectedAddress) {
+                                    setState(() {
+                                      _alamat = selectedAddress;
+                                    });
+                                  }),
+                                ),
+                              );
+                            },
+                            child: const Text('Pilih Alamat'))
+                        : TextButton(
+                            onPressed: () async {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapScreen(
+                                      onLocationSelected: (selectedAddress) {
+                                    setState(() {
+                                      _alamat = selectedAddress;
+                                    });
+                                  }),
+                                ),
+                              );
+                              setState(() {});
+                            },
+                            child: const Text('Ubah Alamat'),
+                          )
+                  ],
                 ),
               ),
               Container(
@@ -104,7 +143,7 @@ class _FormKontakState extends State<FormKontak> {
                 height: 40,
               ),
               ElevatedButton(
-                  onPressed: getImage, child: const Text("Ambil Gambar")),
+                  onPressed: getImage, child: const Text("Pilih Gambar")),
               const SizedBox(
                 height: 10,
               ),
@@ -113,11 +152,12 @@ class _FormKontakState extends State<FormKontak> {
                   child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          // proses simpan data
                           var result = await KontakController().addPerson(
                             Kontak(
                               nama: _namaController.text,
                               email: _emailController.text,
-                              alamat: _alamatController.text,
+                              alamat: _alamat ?? '',
                               noTelepon: _noTelpController.text,
                               foto: _image!.path,
                             ),
