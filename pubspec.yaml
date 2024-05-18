@@ -39,8 +39,7 @@ dependencies:
   path:
   geolocator: ^9.0.2
   geocoding: ^2.0.4
-  google_maps_flutter: ^2.2.3
-  permission_handler: ^9.1.0
+  google_maps_flutter: ^2.6.1
 
 dev_dependencies:
   flutter_test:

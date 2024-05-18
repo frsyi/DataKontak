@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class Kontak {
@@ -7,6 +6,7 @@ class Kontak {
   final String alamat;
   final String noTelepon;
   final String foto;
+
   Kontak({
     required this.nama,
     required this.email,
